@@ -1,5 +1,5 @@
 # Archive-Webpage
-Publicly archive any website
+Publicly archive any website using the [Archive.Today](https://archive.today) service
 
 <img src="https://github.com/user-attachments/assets/22ef0e74-1eb0-4b2b-b5df-c49d70827ecf" width="800">
 
