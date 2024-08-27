@@ -2,6 +2,7 @@
 
 // Function to create a new tab with the proxied URL
 function openProxiedUrl(url) {
+try{
   let cleanedUrl = cleanUrl(url);
   let processedUrl = processArchiveUrl(cleanedUrl);
   let finalUrl = cleanTrackingParams(processedUrl);
@@ -9,6 +10,9 @@ function openProxiedUrl(url) {
   const encodedUrl = encodeURIComponent(finalUrl);
   const proxyUrl = `https://archive.is/?run=1&url=${encodedUrl}`;
   chrome.tabs.create({ url: proxyUrl });
+  } catch (error) {
+    console.error("Failed to open proxied URL: ", error);
+  }
 }
 
 // Listener for the extension icon click
@@ -20,16 +24,26 @@ chrome.action.onClicked.addListener((tab) => {
 // Create context menu for hyperlinks
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
-      id: "archive-link",
-      title: "Archive Link",
-      contexts: ["link"]
+    id: "archive-link",
+    title: "Archive Selected Link",
+    contexts: ["link"]
+  });
+
+  chrome.contextMenus.create({
+    id: "archive-selection",
+    title: "Archive an Embedded Url",
+    contexts: ["selection"]
   });
 });
 
-// Listener for context menu click
+// Listener for right click menu
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "archive-link") {
-      openProxiedUrl(info.linkUrl);
+    openProxiedUrl(info.linkUrl);
+  } else if (info.menuItemId === "archive-selection" && isValidUrl(extractUrl(info.selectionText))) {
+    openProxiedUrl(info.selectionText);
+  } else {
+    console.log("Selected text is not a valid URL.");
   }
 });
 
@@ -39,7 +53,7 @@ const trackingParams = new Set([
   "fbclid", "gclid", "dclid", "gbraid", "wbraid", "msclkid", "tclid",
   "aff_id", "affiliate_id", "ref", "referer", "campaign_id", "ad_id",
   "adgroup_id", "adset_id", "creativetype", "placement", "network",
-  "mc_eid", "mc_cid", "s", "icid", "_ga", "_gid", "scid", "click_id",
+  "mc_eid", "mc_cid", "si", "icid", "_ga", "_gid", "scid", "click_id",
   "trk", "track", "trk_sid", "sid", "mibextid", "fb_action_ids",
   "fb_action_types", "twclid", "igshid", "s_kwcid"
 ]);
@@ -82,4 +96,29 @@ function processArchiveUrl(url) {
   const pattern = /archive\.[a-z]+\/o\/[a-zA-Z0-9]+\/(.+)/;
   const match = url.match(pattern);
   return match ? match[1] : url;
+}
+
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+
+function extractUrl(text) {
+  // Regular expression to match URLs
+  const urlPattern = /https?:\/\/[^\s/$.?#].[^\s]*/g;
+  const match = text.match(urlPattern);
+  
+  if (match && match.length > 0) {
+    let url = match[0];
+    // Clean the URL by removing erroneous prefixes
+    url = cleanUrl(url);
+    return url;
+  } else {
+    return null;
+  }
 }
