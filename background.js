@@ -55,7 +55,8 @@ const trackingParams = new Set([
   "adgroup_id", "adset_id", "creativetype", "placement", "network",
   "mc_eid", "mc_cid", "si", "icid", "_ga", "_gid", "scid", "click_id",
   "trk", "track", "trk_sid", "sid", "mibextid", "fb_action_ids",
-  "fb_action_types", "twclid", "igshid", "s_kwcid"
+  "fb_action_types", "twclid", "igshid", "s_kwcid", "sxsrf", "sca_esv",
+  "source", "tbo", "sa", "ved" //sxsrf might be needed on some sites, but google uses it for tracking
 ]);
 
 // Function to clean tracking parameters from the URL

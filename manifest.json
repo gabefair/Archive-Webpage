@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Archive Webpage",
-    "version": "2.2",
+    "version": "2.3",
     "description": "Publicly archive any website using the archive.today, archive.is, archive.ph service",
     "permissions": [
       "tabs", "contextMenus"
