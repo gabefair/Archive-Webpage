@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Share 2 Archive Webpage Today",
-    "version": "2.4",
-    "description": "Publicly archive any website using the archive.today, archive.is, archive.ph service",
+    "name": "Archive Any Website Today",
+    "version": "2.5",
+    "description": "Publicly archive and preserve any public webpage using the archive.today, archive.is, archive.ph, archive.vn service",
     "permissions": [
       "tabs", "contextMenus"
     ],
@@ -14,7 +14,8 @@
         "16": "icons/icon.png",
         "48": "icons/icon.png",
         "128": "icons/icon.png"
-      }
+      },
+      "default_title": "Archive Webpage"
     },
     "icons": {
       "16": "icons/icon.png",

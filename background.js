@@ -59,7 +59,7 @@ const trackingParams = new Set([
   "mc_eid", "mc_cid", "si", "icid", "_ga", "_gid", "scid", "click_id",
   "trk", "track", "trk_sid", "sid", "mibextid", "fb_action_ids",
   "fb_action_types", "twclid", "igshid", "s_kwcid", "sxsrf", "sca_esv",
-  "source", "tbo", "sa", "ved" // sxsrf might be needed on some sites, but Google uses it for tracking
+  "source", "tbo", "sa", "ved", "pi" // sxsrf might be needed on some sites, but Google uses it for tracking
 ]);
 
 // Function to clean tracking parameters from the URL
@@ -84,6 +84,10 @@ function cleanTrackingParams(url) {
     }
 
     uri.pathname = uri.pathname.replace("/shorts/", "/v/");
+  }
+
+  else if(uri.host.endsWith(".substack.com")){
+    uri.pathname = uri.pathname + "/?no_cover=true";
   }
 
   return uri.toString();
